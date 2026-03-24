@@ -33,7 +33,7 @@ npm install file:../cypress-jsonl-logger
 ```
 ### GitHub install
 ```bash
-npm install https://github.com/yourname/cypress-jsonl-logger.git
+npm install https://github.com/valentinomilanov/cypress-jsonl-logger.git
 ```
 ## Usage
 This plugin has two entry points:
