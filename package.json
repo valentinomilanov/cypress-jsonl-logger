@@ -1,0 +1,23 @@
+{
+  "name": "cypress-jsonl-logger",
+  "version": "1.0.6",
+  "description": "Simple JSONL logger for Cypress tests (steps, verifications, info, result)",
+  "type": "module",
+  "exports": {
+    "./browser": "./src/browser.js",
+    "./node": "./src/node.js"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "cypress",
+    "cypress-plugin",
+    "logging",
+    "reporting",
+    "qa",
+    "automation"
+  ],
+  "author": "Valentino Milanov",
+  "license": "MIT"
+}
