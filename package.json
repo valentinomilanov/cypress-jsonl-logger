@@ -1,6 +1,6 @@
 {
   "name": "cypress-jsonl-logger",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Simple JSONL logger for Cypress tests (steps, verifications, info, result)",
   "type": "module",
   "exports": {

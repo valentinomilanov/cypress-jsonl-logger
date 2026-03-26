@@ -2,17 +2,15 @@ beforeEach(function () {
   const test = this.currentTest
   const time = new Date().toISOString()
 
-
-
   console.log(
-    `\n=== TEST START: `+
-    `[${time}]` + 
+    `\n=== TEST START: ` +
+    `[${time}]` +
     `[ID:${test.title.split(':')[0]}]` +
     `[TITLE:${test.title}]" ===`
   )
 
   cy.task('jsonlLog', {
-    type: 'start',
+    type: 'START',
     test_case_id: test.title.split(':')[0],
     title: test.title
   })
@@ -23,24 +21,24 @@ afterEach(function () {
   const time = new Date().toISOString()
 
   console.log(
-    `[${time}]` + 
-    `[RESULT] ` + 
+    `[${time}]` +
+    `[RESULT] ` +
     `STATUS:${test.state.toUpperCase()} ` +
     `DURATION:${test.duration}`
   )
 
   console.log(
     `=== TEST END: ` +
-    `[${time}]` + 
+    `[${time}]` +
     `[ID:${test.title.split(':')[0]}]` +
     `[TITLE:${test.title}] ===\n`
   )
 
   cy.task('jsonlLog', {
-    type: 'result',
-    status: test.state,
+    type: 'RESULT',
+    status: test.state.toUpperCase(),
     duration: test.duration
   })
 
-  cy.task('jsonlLog', { type: 'end' })
+  cy.task('jsonlLog', { type: 'END' })
 })

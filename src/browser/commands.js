@@ -1,22 +1,19 @@
 let loggerOff = false
-//let consoleOn = true
 
-function logToConsole(type, text) {
+function logToConsole(type, text, color = '\x1b[0m') {
   const time = new Date().toISOString()
   const { spec, test } = ctx()
 
   console.log(
-    `[${time}]` + 
-    `[${type.toUpperCase()}]` + 
+    `${color}` +
+    `[${time}]` +
     `[${spec}]` +
-    `[${test}] | ` +
-    `${text}`
+    `[${test}]` +
+    `[${type.toUpperCase()}] | ` +
+    `${text}` +
+    `\x1b[0m`
   )
 }
-
-Cypress.Commands.add('loggerOff', (value = true) => {
-  loggerOff = value
-})
 
 function ctx() {
   const t = Cypress.currentTest
@@ -26,35 +23,70 @@ function ctx() {
   }
 }
 
+Cypress.Commands.add('loggerOff', (value = true) => {
+  loggerOff = value
+})
+
 Cypress.Commands.add('logStep', (text, consoleOn = true) => {
-  if (consoleOn) {
-    logToConsole('step', text)
-  }
+  if (consoleOn) logToConsole('STEP', text)
   cy.task('jsonlLog', {
-    type: loggerOff ? 'info' : 'step',
+    type: loggerOff ? 'INFO' : 'STEP',
     ...ctx(),
     text
   })
 })
 
 Cypress.Commands.add('logVerification', (text, consoleOn = true) => {
-  if (consoleOn) {
-    logToConsole('verification', text)
-  }
+  if (consoleOn) logToConsole('VERIFICATION', text)
   cy.task('jsonlLog', {
-    type: loggerOff ? 'info' : 'verification',
+    type: loggerOff ? 'INFO' : 'VERIFICATION',
     ...ctx(),
     text
   })
 })
 
 Cypress.Commands.add('logInfo', (text, consoleOn = true) => {
-  if (consoleOn) {
-    logToConsole('info', text)
-  }
+  if (consoleOn) logToConsole('INFO', text)
   cy.task('jsonlLog', {
-    type: 'info',
+    type: 'INFO',
     ...ctx(),
     text
+  })
+})
+
+Cypress.Commands.add('logClickButton', (buttonName, consoleOn = true) => {
+  const text = `Click on ${buttonName} button`
+  if (consoleOn) logToConsole('STEP', text)
+  cy.task('jsonlLog', {
+    type: loggerOff ? 'INFO' : 'STEP',
+    ...ctx(),
+    text
+  })
+})
+
+Cypress.Commands.add('logEnterValueToField', (fieldName, value, consoleOn = true) => {
+  const text = `Enter ${value} into ${fieldName} field`
+  if (consoleOn) logToConsole('STEP', text)
+  cy.task('jsonlLog', {
+    type: loggerOff ? 'INFO' : 'STEP',
+    ...ctx(),
+    text
+  })
+})
+
+Cypress.Commands.add('logViolation', (violations, consoleOn = true) => {
+  violations.forEach((violation) => {
+    const nodeDetails = violation.nodes.map((node) => node.target.join(', '))
+    const text = `[${violation.impact.toUpperCase()}] ${violation.id}`
+    if (consoleOn) logToConsole('VIOLATION', text, '\x1b[31m')
+    cy.task('jsonlLog', {
+      type: 'VIOLATION',
+      ...ctx(),
+      id: violation.id,
+      impact: violation.impact.toUpperCase(),
+      description: violation.description,
+      nodes: violation.nodes.length,
+      nodeDetails
+    })
   })
 })
